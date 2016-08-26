@@ -7,13 +7,15 @@ namespace LibraryManagementSystem.Models
     public enum TrangThai
     {
         [Display(Name = "Có Sẵn",Description = "Có Sẵn")]
-        Available,
+        CoSan,
 
         [Display(Name = "Đang Được Mượn", Description = "Đang Được Mượn")]
-        Borrow,
+        DangMuon,
 
         [Display(Name = "Mất", Description = "Mất")]
-        Lost
+        Mat,
+        [Display(Name = "Đã Thanh Lý", Description = "Đã Thanh Lý")]
+        ThanhLy
     }
     public class Sach
     {

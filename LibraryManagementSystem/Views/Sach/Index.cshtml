@@ -62,14 +62,14 @@
             @Html.DisplayFor(modelItem => item.SachID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IDandTen)
+            @Html.DisplayFor(modelItem => item.TenSach)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SoLuong)
         </td>
         <td>
             
-            @Html.DisplayTextFor(modelItem => item.TrangThai)
+            @Html.DisplayFor(modelItem => item.TrangThai)
         </td>
         <td>
             @Html.ActionLink("Sửa", "Edit", new { id=item.ID }) |

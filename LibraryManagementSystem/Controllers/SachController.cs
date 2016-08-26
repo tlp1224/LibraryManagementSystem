@@ -198,7 +198,7 @@ namespace LibraryManagementSystem.Controllers
                                 SachID = row[0].ToString(),
                                 TenSach = row[1].ToString(),
                                 SoLuong = Int32.Parse(row[2].ToString()),
-                                TrangThai = TrangThai.Available
+                                TrangThai = TrangThai.CoSan
                             };
 
                             if (db.Sach.Any(n => n.SachID == sach.SachID && n.TenSach == sach.TenSach))
