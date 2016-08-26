@@ -40,8 +40,7 @@ namespace LibraryManagementSystem.Migrations
                         HocSinhID = c.Int(nullable: false),
                         NgayMuon = c.DateTime(nullable: false),
                         HanTra = c.DateTime(nullable: false),
-                        NgayTra = c.DateTime(nullable: false),
-                        TrangThai = c.Boolean(nullable: false),
+                        NgayTra = c.DateTime(),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.HocSinh", t => t.HocSinhID, cascadeDelete: true)

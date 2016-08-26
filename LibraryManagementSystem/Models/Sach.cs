@@ -40,7 +40,7 @@ namespace LibraryManagementSystem.Models
         {
             get
             {
-                return ID + " - " + TenSach;
+                return SachID + " - " + TenSach;
             }
         }
 

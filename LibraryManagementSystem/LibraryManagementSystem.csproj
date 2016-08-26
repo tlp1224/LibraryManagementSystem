@@ -214,9 +214,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608260555073_Init.cs" />
-    <Compile Include="Migrations\201608260555073_Init.Designer.cs">
-      <DependentUpon>201608260555073_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201608260659548_Init.cs" />
+    <Compile Include="Migrations\201608260659548_Init.Designer.cs">
+      <DependentUpon>201608260659548_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -299,17 +299,17 @@
     <Content Include="Views\ChuDe\Details.cshtml" />
     <Content Include="Views\ChuDe\Edit.cshtml" />
     <Content Include="Views\ChuDe\Index.cshtml" />
-    <Content Include="Views\MuonTraSach\Create.cshtml" />
-    <Content Include="Views\MuonTraSach\Delete.cshtml" />
-    <Content Include="Views\MuonTraSach\Details.cshtml" />
-    <Content Include="Views\MuonTraSach\Edit.cshtml" />
-    <Content Include="Views\MuonTraSach\Index.cshtml" />
     <Content Include="Views\Sach\Create.cshtml" />
     <Content Include="Views\Sach\Delete.cshtml" />
     <Content Include="Views\Sach\Details.cshtml" />
     <Content Include="Views\Sach\Edit.cshtml" />
     <Content Include="Views\Sach\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Enum.cshtml" />
+    <Content Include="Views\MuonTraSach\Create.cshtml" />
+    <Content Include="Views\MuonTraSach\Delete.cshtml" />
+    <Content Include="Views\MuonTraSach\Details.cshtml" />
+    <Content Include="Views\MuonTraSach\Edit.cshtml" />
+    <Content Include="Views\MuonTraSach\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -323,8 +323,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608260555073_Init.resx">
-      <DependentUpon>201608260555073_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608260659548_Init.resx">
+      <DependentUpon>201608260659548_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

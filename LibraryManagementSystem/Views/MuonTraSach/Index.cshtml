@@ -2,18 +2,14 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Mượn Sách</h2>
+<h2>Index</h2>
 
 <p>
-    <div>
-        <a href="Create" class="btn btn-success active" role="button">Tạo Mới</a>
-    </div>
-    
+    @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table table-hover">
+<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.HocSinh.TenHS)
@@ -25,11 +21,12 @@
             @Html.DisplayNameFor(model => model.NgayMuon)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NgayTra)
+            @Html.DisplayNameFor(model => model.HanTra)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TrangThai)
+            @Html.DisplayNameFor(model => model.NgayTra)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -38,21 +35,21 @@
             @Html.DisplayFor(modelItem => item.HocSinh.TenHS)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Sach.TenSach)
+            @Html.DisplayFor(modelItem => item.Sach.IDandTen)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.NgayMuon)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.HanTra)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.NgayTra)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TrangThai)
-        </td>
-        <td>
-            @Html.ActionLink("Trả sách", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Chi tiết", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Xóa", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }

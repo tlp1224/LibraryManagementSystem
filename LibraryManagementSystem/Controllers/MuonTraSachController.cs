@@ -15,42 +15,41 @@ namespace LibraryManagementSystem.Controllers
     {
         private CNCFContext db = new CNCFContext();
 
-        // GET: Muon_Sach
+        // GET: MuonTraSach
         public ActionResult Index()
         {
-            var muon_Sach = db.MuonTraSach.Include(m => m.HocSinh).Include(m => m.Sach);
-
-            return View(muon_Sach.ToList());
+            var muonTraSach = db.MuonTraSach.Include(m => m.HocSinh).Include(m => m.Sach);
+            return View(muonTraSach.ToList());
         }
 
-        // GET: Muon_Sach/Details/5
+        // GET: MuonTraSach/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MuonTraSach muon_Sach = db.MuonTraSach.Find(id);
-            if (muon_Sach == null)
+            MuonTraSach muonTraSach = db.MuonTraSach.Find(id);
+            if (muonTraSach == null)
             {
                 return HttpNotFound();
             }
-            return View(muon_Sach);
+            return View(muonTraSach);
         }
 
-        // GET: Muon_Sach/Create
+        // GET: MuonTraSach
         [HttpPost]
         [Authorize]
-        public ActionResult TimHocSinh_Sach(string tenHS, string tenSach, string confirmed)
+        public ActionResult TimHocSinhSach(string tenHS, string tenSach, string confirmed)
         {
             ViewBag.tenHS = tenHS;
             ViewBag.tenSach = tenSach;
             ViewBag.confirmed = confirmed;
-            return RedirectToAction("Create", "Muon_Sach", new { tenHS = ViewBag.tenHS, tenSach = ViewBag.tenSach, confirmed = ViewBag.confirmed });
+            return RedirectToAction("Create", "MuonTraSach", new { tenHS = ViewBag.tenHS, tenSach = ViewBag.tenSach, confirmed = ViewBag.confirmed });
         }
 
-        [Authorize]
-        public ActionResult Create(string tenHS, string tenSach, string confirmed, string sortOrder)
+        // GET: MuonTraSach/Create
+        public ActionResult Create(string tenHS, string tenSach, string confirmed)
         {
             string confirmed1;
             string temp_tenHS = tenHS;
@@ -59,6 +58,7 @@ namespace LibraryManagementSystem.Controllers
                            select h;
 
             var sach = from s in db.Sach
+                       where s.TrangThai == TrangThai.CoSan
                        select s;
 
             var muon_Sach = db.MuonTraSach.Include(m => m.HocSinh).Include(m => m.Sach);
@@ -85,22 +85,19 @@ namespace LibraryManagementSystem.Controllers
                 confirmed1 = confirmed;
             }
 
-
-            ViewBag.Hoc_SinhID = new SelectList(hoc_sinh, "ID", "TenHS");
-            ViewBag.SachID = new SelectList(sach, "ID", "TenSach");
+            ViewBag.HocSinhID = new SelectList(hoc_sinh, "ID", "TenHS");
+            ViewBag.SachID = new SelectList(sach, "ID", "IDandTen");
             ViewBag.confirm = confirmed1;
             ViewBag.view_muon_sach = muon_Sach;
-
             return View();
         }
 
-        // POST: Muon_Sach/Create
+        // POST: MuonTraSach/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,SachID,Hoc_SinhID,NgayMuon,HanTra,NgayTra,TrangThai")] MuonTraSach muon_Sach, string tenHS, string tenSach)
+        public ActionResult Create([Bind(Include = "ID,SachID,HocSinhID,NgayMuon,HanTra,NgayTra")] MuonTraSach muonTraSach, string tenHS, string tenSach)
         {
             string temp_tenHS = tenHS;
             string temp_tenSach = tenSach;
@@ -120,95 +117,82 @@ namespace LibraryManagementSystem.Controllers
                 sach = sach.Where(s => s.TenSach.Contains(temp_tenSach));
             }
 
+
             if (ModelState.IsValid)
             {
-                db.MuonTraSach.Add(muon_Sach);
+                db.MuonTraSach.Add(muonTraSach);
                 db.SaveChanges();
+
+                // update sach
+                Sach s = db.Sach.Single(c => c.ID == muonTraSach.SachID);
+                s.TrangThai = TrangThai.DangMuon;
+                db.SaveChanges();
+
                 return RedirectToAction("Create", new { tenHS = temp_tenHS, confirmed = "yes" });
             }
 
-            ViewBag.Hoc_SinhID = new SelectList(hoc_sinh, "ID", "TenHS", muon_Sach.HocSinhID);
-            ViewBag.SachID = new SelectList(sach, "ID", "TenSach", muon_Sach.SachID);
-            return View(muon_Sach);
+            ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);
+            ViewBag.SachID = new SelectList(db.Sach, "ID", "SachID", muonTraSach.SachID);
+            return View(muonTraSach);
         }
 
-
-        // GET: Muon_Sach/Edit/5
-
+        // GET: MuonTraSach/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MuonTraSach muon_Sach = db.MuonTraSach.Find(id);
-            ViewBag.tim_HS = muon_Sach.HocSinh.TenHS;
-            var hoc_sinh = from h in db.HocSinh
-                           where h.ID == muon_Sach.HocSinhID
-                           select h;
-
-            var sach = from s in db.Sach
-                       where s.ID == muon_Sach.SachID
-                       select s;
-
-            if (muon_Sach == null)
+            MuonTraSach muonTraSach = db.MuonTraSach.Find(id);
+            if (muonTraSach == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Hoc_SinhID = new SelectList(hoc_sinh, "ID", "TenHS", muon_Sach.HocSinhID);
-            ViewBag.SachID = new SelectList(sach, "ID", "TenSach", muon_Sach.SachID);
-            return View(muon_Sach);
+            ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);
+            ViewBag.SachID = new SelectList(db.Sach, "ID", "SachID", muonTraSach.SachID);
+            return View(muonTraSach);
         }
 
-        // POST: Muon_Sach/Edit/5
+        // POST: MuonTraSach/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,SachID,Hoc_SinhID,NgayMuon,HanTra,NgayTra,TrangThai")] MuonTraSach muon_Sach, string HS_TraSach)
+        public ActionResult Edit([Bind(Include = "ID,SachID,HocSinhID,NgayMuon,HanTra,NgayTra")] MuonTraSach muonTraSach)
         {
-
             if (ModelState.IsValid)
             {
-                db.Entry(muon_Sach).State = EntityState.Modified;
+                db.Entry(muonTraSach).State = EntityState.Modified;
                 db.SaveChanges();
-                //return RedirectToAction("Create");
-                //var hoc_sinh = from h in db.Hoc_Sinh
-                //               where h.ID == muon_Sach.Hoc_SinhID
-                //               select h;
-                //string tenhs = hoc_sinh.Select(h => h.TenHS).ToString() ;
-                return RedirectToAction("Create", "Muon_Sach", new { tenHS = HS_TraSach, confirmed = "yes" });
+                return RedirectToAction("Index");
             }
-            ViewBag.Hoc_SinhID = new SelectList(db.HocSinh, "ID", "TenHS", muon_Sach.HocSinhID);
-            ViewBag.SachID = new SelectList(db.Sach, "ID", "TenSach", muon_Sach.SachID);
-            return View(muon_Sach);
-
+            ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);
+            ViewBag.SachID = new SelectList(db.Sach, "ID", "SachID", muonTraSach.SachID);
+            return View(muonTraSach);
         }
 
-        // GET: Muon_Sach/Delete/5
+        // GET: MuonTraSach/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MuonTraSach muon_Sach = db.MuonTraSach.Find(id);
-            if (muon_Sach == null)
+            MuonTraSach muonTraSach = db.MuonTraSach.Find(id);
+            if (muonTraSach == null)
             {
                 return HttpNotFound();
             }
-            return View(muon_Sach);
+            return View(muonTraSach);
         }
 
-        // POST: Muon_Sach/Delete/5
+        // POST: MuonTraSach/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            MuonTraSach muon_Sach = db.MuonTraSach.Find(id);
-            db.MuonTraSach.Remove(muon_Sach);
+            MuonTraSach muonTraSach = db.MuonTraSach.Find(id);
+            db.MuonTraSach.Remove(muonTraSach);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
