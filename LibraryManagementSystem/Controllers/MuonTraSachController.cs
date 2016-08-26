@@ -120,12 +120,13 @@ namespace LibraryManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                db.MuonTraSach.Add(muonTraSach);
-                db.SaveChanges();
-
-                // update sach
+                // update trạng thái sach
                 Sach s = db.Sach.Single(c => c.ID == muonTraSach.SachID);
                 s.TrangThai = TrangThai.DangMuon;
+                db.SaveChanges();
+
+                // cho mượn
+                db.MuonTraSach.Add(muonTraSach);
                 db.SaveChanges();
 
                 return RedirectToAction("Create", new { tenHS = temp_tenHS, confirmed = "yes" });
@@ -133,6 +134,51 @@ namespace LibraryManagementSystem.Controllers
 
             ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);
             ViewBag.SachID = new SelectList(db.Sach, "ID", "SachID", muonTraSach.SachID);
+            return View(muonTraSach);
+        }
+
+        // GET: MuonTraSach/Edit/5
+        public ActionResult TraSach(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MuonTraSach muonTraSach = db.MuonTraSach.Find(id);
+            if (muonTraSach == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);
+            ViewBag.SachID = new SelectList(db.Sach, "ID", "IDandTen", muonTraSach.SachID);
+            return View(muonTraSach);
+        }
+
+        // POST: MuonTraSach/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TraSach([Bind(Include = "ID,SachID,HocSinhID,NgayMuon,HanTra,NgayTra")] MuonTraSach muonTraSach)
+        {
+            if (ModelState.IsValid)
+            {
+                // update trạng thái sach
+                Sach s = db.Sach.Single(c => c.ID == muonTraSach.SachID);
+                s.TrangThai = TrangThai.CoSan;
+                db.SaveChanges();
+
+                // update muontrasach
+                MuonTraSach mts = db.MuonTraSach.First(m => m.ID == muonTraSach.ID);
+                mts.NgayTra = DateTime.Now;
+                db.SaveChanges();
+
+
+
+                return RedirectToAction("Index");
+            }
+            ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);
+            ViewBag.SachID = new SelectList(db.Sach, "ID", "IDandTen", muonTraSach.SachID);
             return View(muonTraSach);
         }
 
@@ -170,6 +216,8 @@ namespace LibraryManagementSystem.Controllers
             ViewBag.SachID = new SelectList(db.Sach, "ID", "SachID", muonTraSach.SachID);
             return View(muonTraSach);
         }
+
+
 
         // GET: MuonTraSach/Delete/5
         public ActionResult Delete(int? id)
