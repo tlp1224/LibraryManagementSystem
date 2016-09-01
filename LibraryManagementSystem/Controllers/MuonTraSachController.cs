@@ -49,6 +49,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: MuonTraSach/Create
+        [Authorize]
         public ActionResult Create(string tenHS, string tenSach, string confirmed)
         {
             string confirmed1;
@@ -120,16 +121,31 @@ namespace LibraryManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                // update trạng thái sach
-                Sach s = db.Sach.Single(c => c.ID == muonTraSach.SachID);
-                s.TrangThai = TrangThai.DangMuon;
-                db.SaveChanges();
+                // kiểm tra số luọng sách học sinh đã mượn
+                var mts = from m in db.MuonTraSach
+                          where m.HocSinhID == muonTraSach.HocSinhID && m.NgayTra == null
+                          select m;
+                if (mts.Count() < 5) // nếu nhỏ hơn 5 thì cho mượn sách
+                {
 
-                // cho mượn
-                db.MuonTraSach.Add(muonTraSach);
-                db.SaveChanges();
+                    // update trạng thái sach
+                    Sach s = db.Sach.Single(c => c.ID == muonTraSach.SachID);
+                    s.TrangThai = TrangThai.DangMuon;
+                    db.SaveChanges();
+
+                    // cho mượn
+                    db.MuonTraSach.Add(muonTraSach);
+                    db.SaveChanges();
+
+                    ViewBag.Limited = "Học Sinh đã đạt giới hạn mượn 5 cuốn";
+                }
+                else
+                {
+                    ViewBag.Limited = "Học Sinh đã đạt giới hạn mượn 5 cuốn";
+                }
 
                 return RedirectToAction("Create", new { tenHS = temp_tenHS, confirmed = "yes" });
+
             }
 
             ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);

@@ -84,4 +84,3 @@ C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\bin\ICShar
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\bin\Excel.pdb
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\LibraryManagementSystem.Migrations.Init.resources
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\LibraryManagementSystem.csproj.GenerateResource.Cache
-C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\LibraryManagementSystem.csprojResolveAssemblyReference.cache
