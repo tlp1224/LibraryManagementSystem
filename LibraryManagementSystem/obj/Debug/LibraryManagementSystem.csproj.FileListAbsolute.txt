@@ -82,6 +82,6 @@ C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\bin\Excel.dll
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\bin\ICSharpCode.SharpZipLib.dll
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\bin\Excel.pdb
-C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\LibraryManagementSystem.csprojResolveAssemblyReference.cache
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\LibraryManagementSystem.Migrations.Init.resources
 C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\LibraryManagementSystem.csproj.GenerateResource.Cache
+C:\Tot Nghiep\Project\LibraryManagementSystem\LibraryManagementSystem\obj\Debug\LibraryManagementSystem.csprojResolveAssemblyReference.cache

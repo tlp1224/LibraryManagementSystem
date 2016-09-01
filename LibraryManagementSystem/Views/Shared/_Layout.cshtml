@@ -27,11 +27,16 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Học sinh", "Index", "HocSinh")</li>
-                    <li>@Html.ActionLink("Chủ đề", "Index", "ChuDe")</li>
-                    <li>@Html.ActionLink("Sách", "Index", "Sach")</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" aria-expanded="false" aria-haspopup="true" href="#" data-toggle="dropdown">Quản Lý</a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Học sinh", "Index", "HocSinh")</li>
+                            <li>@Html.ActionLink("Chủ đề", "Index", "ChuDe")</li>
+                            <li>@Html.ActionLink("Sách", "Index", "Sach")</li>
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("Mượn/Trả sách", "Create", "MuonTraSach")</li>
-                    <li>@Html.ActionLink("Thống Kê", "ThongKe", "MuonTraSach")</li>
+                    <li>@Html.ActionLink("Thống Kê", "Index", "BaoCao")</li>
                     <li><a href="https://www.cncf.org/operational-centres.html" target="_blank">Liên Hệ</a></li>
                 </ul>
                 @Html.Partial("_LoginPartial")
