@@ -3,6 +3,8 @@ using System.Web.Mvc;
 using LibraryManagementSystem.DAL;
 using System;
 using LibraryManagementSystem.Models.ViewModel;
+using System.Web.Helpers;
+using System.Collections;
 
 namespace LibraryManagementSystem.Controllers
 {
@@ -55,11 +57,27 @@ namespace LibraryManagementSystem.Controllers
                 ViewBag.MuonChuaTra_Count = 0;
             }
 
+            // muon sach qua han
+            var muonquahan = from m in db.MuonTraSach
+                              where m.NgayMuon.Month == _month && m.NgayMuon.Year == _year && m.NgayTra == null && m.HanTra < DateTime.Now
+                              group m by m.HocSinh.TenHS into g
+                              select new BaoCaoVM { GroupName1 = g.Key, GroupSoLuong = g.Count(), GroupDanhSach = g };
+
+            if (muonquahan.Count() > 0)
+            {
+                ViewBag.MuonQuaHan = muonquahan;
+                ViewBag.MuonQuaHan_Count = muonquahan.Sum(m => m.GroupSoLuong);
+            }
+            else
+            {
+                ViewBag.MuonQuaHan_Count = 0;
+            }
+
             // thong ke sach
             var thongkesach = from s in db.Sach
                               group s by s.ChuDe.TenChuDe into g
                               select new BaoCaoVM { GroupName1 = g.Key, GroupSoLuong = g.Count() };
-            if(thongkesach.Count() > 0)
+            if (thongkesach.Count() > 0)
             {
                 ViewBag.ThongKeSach = thongkesach;
                 ViewBag.ThongKeSach_Count = thongkesach.Sum(t => t.GroupSoLuong);
@@ -71,8 +89,14 @@ namespace LibraryManagementSystem.Controllers
 
             ViewBag.date = _month + "/" + _year;
 
+
+
+
+
             return View();
         }
+
+
         /*
         // GET: BaoCao/Details/5
         public ActionResult Details(int? id)
