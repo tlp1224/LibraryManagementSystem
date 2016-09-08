@@ -46,5 +46,6 @@ namespace LibraryManagementSystem.Models
 
         public virtual ChuDe ChuDe { get; set; }
         public virtual ICollection<MuonTraSach> MuonTraSach { get; set; }
+        public virtual ICollection<ThanhLy> ThanhLy { get; set; }
     }
 }
