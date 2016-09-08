@@ -23,11 +23,11 @@ namespace LibraryManagementSystem.Controllers
                 _year = date.Value.Year;
             }
 
-            // muon tra sach trong thang
+            // muon tra sach trong thang 
             var muontrasach = from m in db.MuonTraSach
                               where m.NgayMuon.Month == _month && m.NgayMuon.Year == _year
-                              group m by m.HocSinh.Lop into g
-                              select new BaoCaoVM { GroupName = g.Key, GroupSoLuong = g.Count() };
+                              group m by new { m.HocSinh.Lop, m.HocSinh.TenHS } into g
+                              select new BaoCaoVM { GroupName1 = g.Key.Lop, GroupName2 = g.Key.TenHS, GroupSoLuong = g.Count() };
 
             if (muontrasach.Count() > 0)
             {
@@ -58,7 +58,7 @@ namespace LibraryManagementSystem.Controllers
             // thong ke sach
             var thongkesach = from s in db.Sach
                               group s by s.ChuDe.TenChuDe into g
-                              select new BaoCaoVM { GroupName = g.Key, GroupSoLuong = g.Count() };
+                              select new BaoCaoVM { GroupName1 = g.Key, GroupSoLuong = g.Count() };
             if(thongkesach.Count() > 0)
             {
                 ViewBag.ThongKeSach = thongkesach;

@@ -34,7 +34,10 @@
                             Tên Lớp
                         </th>
                         <th>
-                            Số Lượng
+                            Tên Học Sinh
+                        </th>
+                        <th>
+                            Mượn sách về nhà
                         </th>
                     </tr>
 
@@ -42,7 +45,10 @@
                     {
                         <tr>
                             <td>
-                                @item.GroupName
+                                @item.GroupName1
+                            </td>
+                            <td>
+                                @item.GroupName2
                             </td>
                             <td>
                                 @item.GroupSoLuong
@@ -50,7 +56,7 @@
                         </tr>
                     }
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <strong>Tổng Cộng</strong>
                         </td>
                         <td>
@@ -149,7 +155,7 @@
                 {
                     <tr>
                         <td>
-                            @chude.GroupName
+                            @chude.GroupName1
                         </td>
                         <td>
                             @chude.GroupSoLuong
