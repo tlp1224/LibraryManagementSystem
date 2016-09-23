@@ -50,7 +50,7 @@ namespace LibraryManagementSystem.Controllers
 
         // GET: MuonTraSach/Create
         [Authorize]
-        public ActionResult Create(string tenHS, string tenSach, string confirmed)
+        public ActionResult Create(string tenHS, string tenSach, string confirmed, string stt)
         {
             string confirmed1;
             string temp_tenHS = tenHS;
@@ -86,10 +86,22 @@ namespace LibraryManagementSystem.Controllers
                 confirmed1 = confirmed;
             }
 
+            if(stt == null)
+            {
+                ViewBag.stt = "OK";
+            }
+            else
+            {
+                ViewBag.stt = stt;
+            }
+
+
             ViewBag.HocSinhID = new SelectList(hoc_sinh, "ID", "TenHS");
             ViewBag.SachID = new SelectList(sach, "ID", "IDandTen");
             ViewBag.confirm = confirmed1;
             ViewBag.view_muon_sach = muon_Sach;
+            ViewBag.Limited = "Học sinh đã đạt giới hạn mượn 5 cuốn.";
+            ViewBag.Expired = "Học sinh đã đến hạn trả sách nhưng chưa trả.";
             return View();
         }
 
@@ -127,25 +139,32 @@ namespace LibraryManagementSystem.Controllers
                           select m;
                 if (mts.Count() < 5) // nếu nhỏ hơn 5 thì cho mượn sách
                 {
+                    // kiểm tra đã quá hạn trả sách chưa
+                    var mts2 = from m in mts
+                               where m.HanTra < DateTime.Now
+                               select m;
+                    if (mts2.Count() > 0) //có sách quá hạn trả
+                    {
+                        return RedirectToAction("Create", new { tenHS = temp_tenHS, confirmed = "yes", stt = "expired" });
+                    }
+                    else //không có sách đến hạn trả, đc phếp mượn
+                    {
+                        // update trạng thái sach
+                        Sach s = db.Sach.Single(c => c.ID == muonTraSach.SachID);
+                        s.TrangThai = TrangThai.DangMuon;
+                        db.SaveChanges();
 
-                    // update trạng thái sach
-                    Sach s = db.Sach.Single(c => c.ID == muonTraSach.SachID);
-                    s.TrangThai = TrangThai.DangMuon;
-                    db.SaveChanges();
-
-                    // cho mượn
-                    db.MuonTraSach.Add(muonTraSach);
-                    db.SaveChanges();
-
-                    ViewBag.Limited = "Học Sinh đã đạt giới hạn mượn 5 cuốn";
+                        // cho mượn
+                        db.MuonTraSach.Add(muonTraSach);
+                        db.SaveChanges();
+                        return RedirectToAction("Create", new { tenHS = temp_tenHS, confirmed = "yes" });
+                        
+                    }
                 }
                 else
                 {
-                    ViewBag.Limited = "Học Sinh đã đạt giới hạn mượn 5 cuốn";
+                    return RedirectToAction("Create", new { tenHS = temp_tenHS, confirmed = "yes", stt = "limited" });
                 }
-
-                return RedirectToAction("Create", new { tenHS = temp_tenHS, confirmed = "yes" });
-
             }
 
             ViewBag.HocSinhID = new SelectList(db.HocSinh, "ID", "TenHS", muonTraSach.HocSinhID);
